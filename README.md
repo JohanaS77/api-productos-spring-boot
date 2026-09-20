@@ -25,7 +25,7 @@
 - [Características técnicas clave](#-características-técnicas-clave)
 - [Retos evaluativos complementarios](#-retos-evaluativos-complementarios)
 - [Mejoras futuras](#-mejoras-futuras)
-- [Desarrolladora](#-desarrolladora)
+- [Desarrolladora](#%E2%80%8D-desarrolladora)
 - [Licencia](#-licencia)
 
 ---
