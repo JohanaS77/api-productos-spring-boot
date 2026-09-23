@@ -36,6 +36,12 @@ public class ProductoController {
         return productoService.obtenerPorCategoria(categoria);
     }
 
+       // GET: Filtrar por precio menor a un valor (query param)
+   @GetMapping("/precio-menor-a")
+   public List<Producto> listarPorPrecioMenorA(@RequestParam Double precio) {
+       return productoService.obtenerPorPrecioMenorA(precio);  //agregado para el reto 1
+   }
+
     // POST: Crear un nuevo producto
     @PostMapping
     public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
@@ -62,4 +68,17 @@ public class ProductoController {
         }
         return ResponseEntity.notFound().build();
     }
+
+       // PATCH: Reducir stock de un producto
+   @PatchMapping("/{id}/reducir-stock")   //agregado para el reto 2
+   public ResponseEntity<?> reducirStock(@PathVariable Long id, @RequestParam Integer cantidad) {
+       try {
+           Producto actualizado = productoService.reducirStock(id, cantidad);
+           return ResponseEntity.ok(actualizado);
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.badRequest().body(e.getMessage());
+       } catch (RuntimeException e) {
+           return ResponseEntity.notFound().build();
+       }
+   }
 }

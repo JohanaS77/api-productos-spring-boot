@@ -26,6 +26,10 @@ public class ProductoService {
         return productoRepository.findByCategoria(categoria);
     }
 
+       public List<Producto> obtenerPorPrecioMenorA(Double precio) {
+       return productoRepository.findByPrecioLessThan(precio);  //agregado para el reto 1
+   }
+
     public Producto guardar(Producto producto) {
         return productoRepository.save(producto);
     }
@@ -49,4 +53,16 @@ public class ProductoService {
         }
         return false;
     }
+
+       public Producto reducirStock(Long id, Integer cantidad) {  //agregdo para el reto 2
+       Producto producto = productoRepository.findById(id)
+               .orElseThrow(() -> new RuntimeException("Producto no encontrado con el ID: " + id));
+
+       if (producto.getStock() < cantidad) {
+           throw new IllegalArgumentException("Stock insuficiente. Stock actual: " + producto.getStock());
+       }
+
+       producto.setStock(producto.getStock() - cantidad);
+       return productoRepository.save(producto);
+   }
 }

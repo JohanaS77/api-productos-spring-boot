@@ -11,4 +11,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     // Consulta personalizada derivada del nombre del método
     List<Producto> findByCategoria(String categoria);
+    List<Producto> findByPrecioLessThan(Double precio);  //agregado para el reto 1
 }
