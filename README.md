@@ -180,6 +180,7 @@ api_productos/
 │
 ├── pom.xml
 ├── .gitignore
+├── .vscode/            (no incluido en el repo, contiene tu DB_PASSWORD local)
 ├── README.md
 │
 ├── images/
@@ -190,7 +191,11 @@ api_productos/
 │   ├── postman4.png
 │   ├── postman5.png
 │   ├── postman6.png
-│   └── postman7.png
+│   ├── postman7.png
+│   ├── reto1.png
+│   ├── reto2a.png
+│   ├── reto2b.png
+│   └── reto3.png
 │
 └── src/
     └── main/
@@ -269,9 +274,56 @@ http://localhost:8080/api/productos
 
 ## 🎯 Retos evaluativos complementarios
 
-- [ ] Implementar una consulta personalizada `findByPrecioLessThan` para filtrar productos por precio
-- [ ] Crear un endpoint `PATCH` en `/api/productos/{id}/reducir-stock` para reducir el stock, validando disponibilidad
-- [ ] Sustituir la base de datos H2 por un motor persistente como MySQL o PostgreSQL
+Además de las 7 pruebas HTTP principales, se desarrollaron los 3 retos propuestos en la guía:
+
+### 🔎 Reto 1: Consulta personalizada por precio
+
+Se implementó una consulta derivada `findByPrecioLessThan` en el repositorio, expuesta a través de un nuevo endpoint que permite filtrar productos cuyo precio sea menor a un valor dado.
+
+**Endpoint:** `GET /api/productos/precio-menor-a?precio={valor}`
+
+<div align="center">
+  <img src="images/reto1.png" alt="Reto 1 - Consulta por precio" width="600"/>
+</div>
+
+---
+
+### 📉 Reto 2: Reducción de stock con validación
+
+Se creó un endpoint `PATCH` que reduce el stock de un producto en la cantidad indicada. Si la cantidad solicitada supera el stock disponible, la API responde con un error **400 Bad Request** en lugar de permitir un stock negativo.
+
+**Endpoint:** `PATCH /api/productos/{id}/reducir-stock?cantidad={valor}`
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <b>✅ Reducción exitosa (200 OK)</b><br/>
+      <img src="images/reto2a.png" alt="Reto 2 - Reduccion exitosa" width="480"/>
+    </td>
+    <td align="center">
+      <b>⛔ Stock insuficiente (400 Bad Request)</b><br/>
+      <img src="images/reto2b.png" alt="Reto 2 - Stock insuficiente" width="480"/>
+    </td>
+  </tr>
+</table>
+
+---
+
+### 🗄️ Reto 3: Persistencia con MySQL
+
+Se sustituyó la base de datos en memoria H2 por **MySQL**, un motor de base de datos relacional persistente. Esto se logró:
+
+- Agregando la dependencia `mysql-connector-j` en `pom.xml`
+- Configurando la conexión en `application.properties` mediante la URL `jdbc:mysql://localhost:3306/inventariodb`
+- Protegiendo la contraseña de la base de datos con una variable de entorno (`${DB_PASSWORD}`), en lugar de dejarla escrita directamente en el código
+
+Como evidencia de la persistencia real de los datos, se creó un producto, se reinició el servidor por completo, y se consultó nuevamente el mismo producto: la información se mantuvo intacta (a diferencia del comportamiento con H2, donde los datos se perdían en cada reinicio).
+
+<div align="center">
+  <img src="images/reto3.png" alt="Reto 3 - Persistencia en MySQL" width="600"/>
+</div>
+
+> ⚠️ **Nota de seguridad:** la contraseña real de la base de datos no se incluye en este repositorio. Se configura de forma local mediante una variable de entorno `DB_PASSWORD`, definida en el archivo `.vscode/launch.json` (excluido del control de versiones mediante `.gitignore`).
 
 [⬆️ Volver arriba](#-tabla-de-contenido)
 
